@@ -2,44 +2,58 @@ package com.marcusvynicius.ecommerce_api.security;
 
 import com.marcusvynicius.ecommerce_api.providers.JWTUserProvider;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
 
 @Component
-public class SecurityUserFilter {
+public class SecurityUserFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTUserProvider jwtUserProvider;
+    private final JWTUserProvider jwtUserProvider;
+
+    public SecurityUserFilter(JWTUserProvider jwtUserProvider) {
+        this.jwtUserProvider = jwtUserProvider;
+    }
 
     @Override
-    protected void doFilterInternal (
+    protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain) {
+            FilterChain filterChain) throws ServletException, IOException {
 
-        //SecurityContextHoler.getContext().setAuthentication(null)
         String header = request.getHeader("Authorization");
 
-        if(request.getRequestURI().startsWith("/user")) {
+        if (header != null
+                && header.startsWith("Bearer ")
+                && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var token = jwtUserProvider.verifyToken(header);
 
-            if(header != null) {
-                var token = this.jwtUserProvider.verifyToken(header);
+            if (token != null) {
+                var role = jwtUserProvider.getRole(token);
 
-                if(token == null) {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                if (role == null || role.isBlank()) {
+                    filterChain.doFilter(request, response);
                     return;
                 }
 
-                var role = token.getClaim("role").asList(Object.class);
-                var grant = role.stream()
-                        .map(role -> "ROLE_" + role.toString().toUpperCase())
-                        .toList();
+                var authentication = new UsernamePasswordAuthenticationToken(
+                        token.getSubject(),
+                        null,
+                        java.util.List.of(new SimpleGrantedAuthority("ROLE_" + role)));
 
-                UsarnamePasswordAuthenticationToken auth =
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }

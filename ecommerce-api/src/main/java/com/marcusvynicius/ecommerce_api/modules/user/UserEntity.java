@@ -8,7 +8,6 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.NumberFormat;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

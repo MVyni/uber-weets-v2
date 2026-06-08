@@ -14,19 +14,31 @@ public class JWTUserProvider {
     private String secretKey;
 
     public DecodedJWT verifyToken(String token) {
-
-        token = token.replace("Bearer ", "");
+        token = token.replace("Bearer ", "").trim();
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         try {
-            var tokenDecoded = JWT.require(algorithm)
+            return JWT.require(algorithm)
                     .build()
                     .verify(token);
-
-            return tokenDecoded;
-
         } catch (JWTVerificationException e) {
             return null;
         }
+    }
+
+    public String getRole(DecodedJWT token) {
+        var role = token.getClaim("role").asString();
+
+        if (role == null || role.isBlank()) {
+            var roles = token.getClaim("roles").asList(String.class);
+
+            if (roles == null || roles.isEmpty()) {
+                return null;
+            }
+
+            role = roles.get(0);
+        }
+
+        return role.trim().toUpperCase();
     }
 }

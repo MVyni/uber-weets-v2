@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    private SecurityUserFilter securityUserFilter;
+    private SecurityFilter securityUserFilter;
 
     private static final String[] SWAGGER_LIST = {
             "/swagger-ui/**",

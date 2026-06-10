@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JWTUserProvider {
+public class JWTProvider {
 
     @Value("${jwt.secret}")
     private String secretKey;

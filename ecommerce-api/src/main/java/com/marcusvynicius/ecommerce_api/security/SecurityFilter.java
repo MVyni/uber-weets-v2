@@ -1,6 +1,6 @@
 package com.marcusvynicius.ecommerce_api.security;
 
-import com.marcusvynicius.ecommerce_api.providers.JWTUserProvider;
+import com.marcusvynicius.ecommerce_api.providers.JWTProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +15,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class SecurityUserFilter extends OncePerRequestFilter {
+public class SecurityFilter extends OncePerRequestFilter {
 
-    private final JWTUserProvider jwtUserProvider;
+    private final JWTProvider jwtUserProvider;
 
-    public SecurityUserFilter(JWTUserProvider jwtUserProvider) {
+    public SecurityFilter(JWTProvider jwtUserProvider) {
         this.jwtUserProvider = jwtUserProvider;
     }
 

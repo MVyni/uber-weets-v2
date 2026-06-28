@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class TestUtils {
@@ -30,7 +29,8 @@ public class TestUtils {
         return JWT.create().withIssuer("kings-yard")
                 .withSubject(userId.toString())
                 .withExpiresAt(expiresIn)
-                .withClaim("roles", Arrays.asList("user", "admin"))
+                .withClaim("role", "ADMIN")
                 .sign(algorithm);
     }
+
 }

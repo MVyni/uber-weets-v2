@@ -38,7 +38,7 @@ public class UserEntity {
     @Schema(description = "User's password", example = "user_123")
     private String password_hash;
 
-    @Schema(description = "User's phone number", example = "+1 (555) 123-4567")
+    @Schema(description = "User's phone number", example = "+351 555 124 567")
     private String phone;
 
     @Enumerated(EnumType.STRING)

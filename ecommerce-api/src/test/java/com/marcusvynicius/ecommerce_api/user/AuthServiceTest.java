@@ -1,4 +1,4 @@
-package com.marcusvynicius.ecommerce_api;
+package com.marcusvynicius.ecommerce_api.user;
 
 import com.marcusvynicius.ecommerce_api.exceptions.InvalidCredentialsException;
 import com.marcusvynicius.ecommerce_api.modules.user.DTOs.AuthRequestDTO;

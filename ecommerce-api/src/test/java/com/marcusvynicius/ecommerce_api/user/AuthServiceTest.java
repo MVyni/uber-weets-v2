@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -43,6 +44,7 @@ class AuthServiceTest {
         var login = new AuthRequestDTO("admin@uberweets.local", "Admin@123");
 
         var user = UserEntity.builder()
+                .id(UUID.randomUUID())
                 .name("admin")
                 .email("admin@uberweets.local")
                 .password_hash("$we5&345hash")

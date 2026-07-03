@@ -40,7 +40,7 @@ public class AuthService {
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
         var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
         var token =  JWT.create()
-                .withSubject(user.getEmail())
+                .withSubject(user.getId().toString())
                 .withClaim("role", user.getRole().name())
                 .withExpiresAt(java.util.Date.from(expiresIn))
                 .sign(algorithm);

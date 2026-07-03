@@ -1,6 +1,7 @@
 package com.marcusvynicius.ecommerce_api.security;
 
 import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +42,9 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(SWAGGER_LIST).permitAll();
                     auth.requestMatchers("/auth/login").permitAll();

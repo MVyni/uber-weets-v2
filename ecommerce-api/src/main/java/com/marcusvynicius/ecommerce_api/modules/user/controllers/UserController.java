@@ -28,7 +28,7 @@ public class UserController {
     private UserProfileService userProfileService;
 
     @GetMapping("/profile")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     @Operation(summary = "Get user profile", description = "Get user profile by id")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = {

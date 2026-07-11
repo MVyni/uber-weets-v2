@@ -25,7 +25,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "products")
 public class ProductEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

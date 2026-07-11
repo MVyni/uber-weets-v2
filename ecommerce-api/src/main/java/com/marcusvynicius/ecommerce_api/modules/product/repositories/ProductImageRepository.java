@@ -24,13 +24,13 @@ public interface ProductImageRepository extends JpaRepository<ProductImageEntity
      * Returns the main (featured) image of a product, if one is set.
      * Typically used for product listings and thumbnails.
      */
-    Optional<ProductImageEntity> findByProductIdAndIsMainImageTrue(UUID productId);
+    Optional<ProductImageEntity> findByProductIdAndMainImageTrue(UUID productId);
 
     /**
      * Returns all images that are marked as main image for a product.
      * Should only ever return 0 or 1 result; useful for integrity checks.
      */
-    List<ProductImageEntity> findAllByProductIdAndIsMainImageTrue(UUID productId);
+    List<ProductImageEntity> findAllByProductIdAndMainImageTrue(UUID productId);
 
     /**
      * Counts how many images a product currently has.
@@ -41,7 +41,7 @@ public interface ProductImageRepository extends JpaRepository<ProductImageEntity
     /**
      * Checks whether a main image is already assigned to the product.
      */
-    boolean existsByProductIdAndIsMainImageTrue(UUID productId);
+    boolean existsByProductIdAndMainImageTrue(UUID productId);
 
     /**
      * Checks whether a specific image URL is already registered for a product.
@@ -62,14 +62,13 @@ public interface ProductImageRepository extends JpaRepository<ProductImageEntity
      * Should be called before setting a new main image to ensure only one exists.
      */
     @Modifying
-    @Query("UPDATE product_images pi SET pi.is_main_image = false WHERE pi.product.id = :productId")
+    @Query("UPDATE product_images pi SET pi.mainImage = false WHERE pi.product.id = :productId")
     void clearMainImageByProductId(@Param("productId") UUID productId);
 
     /**
      * Returns the next available sort_order value for a product.
      * Useful when appending a new image at the end of the gallery.
      */
-    @Query("SELECT COALESCE(MAX(pi.sort_order), -1) + 1 FROM product_images pi WHERE pi.product.id = :productId")
+    @Query("SELECT COALESCE(MAX(pi.sortOrder), -1) + 1 FROM product_images pi WHERE pi.product.id = :productId")
     int findNextSortOrderByProductId(@Param("productId") UUID productId);
 }
-

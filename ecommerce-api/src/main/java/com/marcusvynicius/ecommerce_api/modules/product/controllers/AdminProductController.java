@@ -3,6 +3,7 @@ package com.marcusvynicius.ecommerce_api.modules.product.controllers;
 import com.marcusvynicius.ecommerce_api.modules.product.DTOs.ProductRequestDTO;
 import com.marcusvynicius.ecommerce_api.modules.product.DTOs.ProductResponseDTO;
 import com.marcusvynicius.ecommerce_api.modules.product.services.CreateProductService;
+import com.marcusvynicius.ecommerce_api.modules.product.services.UpdateProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,10 +15,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/admin/products")
@@ -26,6 +26,9 @@ public class AdminProductController {
 
     @Autowired
     private CreateProductService createProductService;
+
+    @Autowired
+    private UpdateProductService updateProductService;
 
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
@@ -45,5 +48,24 @@ public class AdminProductController {
 
             var result = createProductService.execute(productRequestDTO);
             return ResponseEntity.status(201).body(result);
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Update an existing product", description = "Update an existing product with the provided details")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Product updated successfully",
+                    content = { @Content(schema =  @Schema(implementation = ProductResponseDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Product not found", content = @Content)
+    })
+    public ResponseEntity<Object> update(@RequestBody @Valid ProductRequestDTO productRequestDTO,
+                                         @PathVariable("id") UUID productId) {
+
+        var result = updateProductService.execute(productId, productRequestDTO);
+        return ResponseEntity.status(200).body(result);
     }
 }

@@ -23,7 +23,7 @@ public class UpdateProductService {
 
     public ProductResponseDTO execute(UUID productId, ProductRequestDTO productRequestDTO) {
 
-        this.productRepository.findById(productId).orElseThrow(() -> {
+        var productEntity = this.productRepository.findById(productId).orElseThrow(() -> {
             throw new ResourceNotFoundException("Product not found.");
         });
 
@@ -39,7 +39,7 @@ public class UpdateProductService {
             throw new BusinessException("Product stock quantity must be greater than zero");
         }
 
-        var productEntity = productMapper.mapToEntity(productRequestDTO);
+        productMapper.updateEntityFromRequest(productRequestDTO, productEntity);
         var productSaved = productRepository.save(productEntity);
 
         return productMapper.mapToResponseDTO(productSaved);

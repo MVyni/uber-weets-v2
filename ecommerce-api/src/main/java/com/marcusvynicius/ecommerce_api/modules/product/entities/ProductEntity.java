@@ -47,6 +47,7 @@ public class ProductEntity {
     private BigDecimal stock_quantity;
 
     @Schema(description = "Indicates whether the product is active or not", example = "true")
+    @Builder.Default
     private boolean active = true;
 
     @CreationTimestamp

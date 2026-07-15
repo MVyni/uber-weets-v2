@@ -1,8 +1,10 @@
 package com.marcusvynicius.ecommerce_api.modules.product.controllers;
 
+import com.marcusvynicius.ecommerce_api.modules.product.DTOs.ProductActiveRequestDTO;
 import com.marcusvynicius.ecommerce_api.modules.product.DTOs.ProductRequestDTO;
 import com.marcusvynicius.ecommerce_api.modules.product.DTOs.ProductResponseDTO;
 import com.marcusvynicius.ecommerce_api.modules.product.services.CreateProductService;
+import com.marcusvynicius.ecommerce_api.modules.product.services.SetActiveProductService;
 import com.marcusvynicius.ecommerce_api.modules.product.services.UpdateProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,6 +31,9 @@ public class AdminProductController {
 
     @Autowired
     private UpdateProductService updateProductService;
+
+    @Autowired
+    private SetActiveProductService setActiveProductService;
 
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
@@ -66,6 +71,15 @@ public class AdminProductController {
                                          @PathVariable("id") UUID productId) {
 
         var result = updateProductService.execute(productId, productRequestDTO);
+        return ResponseEntity.status(200).body(result);
+    }
+
+    @PatchMapping("/active/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Object> setActive(@RequestBody @Valid ProductActiveRequestDTO productActiveRequestDTO,
+                                            @PathVariable("id") UUID productId) {
+
+        var result = setActiveProductService.execute(productId, productActiveRequestDTO);
         return ResponseEntity.status(200).body(result);
     }
 }

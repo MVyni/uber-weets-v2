@@ -23,7 +23,7 @@ public class UpdateProductService {
 
     public ProductResponseDTO execute(UUID productId, ProductRequestDTO productRequestDTO) {
 
-        var productEntity = this.productRepository.findById(productId).orElseThrow(() -> {
+        var productEntity = productRepository.findById(productId).orElseThrow(() -> {
             throw new ResourceNotFoundException("Product not found.");
         });
 

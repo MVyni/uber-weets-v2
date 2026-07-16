@@ -76,6 +76,16 @@ public class AdminProductController {
 
     @PatchMapping("/active/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Set product active status", description = "Set the active status of a product")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Product active status updated successfully",
+                    content = { @Content(schema =  @Schema(implementation = ProductResponseDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Product not found", content = @Content)
+    })
     public ResponseEntity<Object> setActive(@RequestBody @Valid ProductActiveRequestDTO productActiveRequestDTO,
                                             @PathVariable("id") UUID productId) {
 

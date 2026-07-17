@@ -9,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class FindAllProductActiveService {
 
@@ -20,9 +18,10 @@ public class FindAllProductActiveService {
     @Autowired
     private ProductMapper productMapper;
 
-    public Page<ProductResponseDTO> execute() {
+    public Page<ProductResponseDTO> execute(Pageable pageable) {
 
-        Page<ProductEntity> products = productRepository.findAllByActiveTrue(Pageable.unpaged());
-        return productMapper.mapToResponseDTOList(products);
+        Page<ProductEntity> products = productRepository.findAllByActiveTrue(pageable);
+
+        return products.map(product -> productMapper.mapToResponseDTO(product));
     }
 }

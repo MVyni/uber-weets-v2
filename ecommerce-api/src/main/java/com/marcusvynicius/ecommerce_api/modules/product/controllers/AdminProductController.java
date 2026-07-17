@@ -42,8 +42,7 @@ public class AdminProductController {
     @SecurityRequirement(name = "jwt_auth")
     @Operation(summary = "Create a new product", description = "Create a new product with the provided details")
     @ApiResponses({
-            @ApiResponse(responseCode = "201",
-                    description = "Product created successfully",
+            @ApiResponse(responseCode = "201", description = "Product created successfully",
                     content = { @Content(schema =  @Schema(implementation = ProductResponseDTO.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),

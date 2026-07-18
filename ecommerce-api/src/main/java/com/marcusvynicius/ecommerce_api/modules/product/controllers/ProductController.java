@@ -1,7 +1,7 @@
 package com.marcusvynicius.ecommerce_api.modules.product.controllers;
 
 import com.marcusvynicius.ecommerce_api.modules.product.DTOs.ProductResponseDTO;
-import com.marcusvynicius.ecommerce_api.modules.product.services.FindAllProductActiveService;
+import com.marcusvynicius.ecommerce_api.modules.product.services.FindAllActiveProductService;
 import com.marcusvynicius.ecommerce_api.modules.product.services.FindProductByIdService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +24,7 @@ import java.util.UUID;
 public class ProductController {
 
     @Autowired
-    private FindAllProductActiveService findAllProductActiveService;
+    private FindAllActiveProductService findAllActiveProductService;
 
     @Autowired
     private FindProductByIdService findProductByIdService;
@@ -60,7 +60,7 @@ public class ProductController {
             @RequestParam(defaultValue = "20") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        var result = findAllProductActiveService.execute(pageable);
+        var result = findAllActiveProductService.execute(pageable);
 
         return ResponseEntity.status(200).body(result);
     }

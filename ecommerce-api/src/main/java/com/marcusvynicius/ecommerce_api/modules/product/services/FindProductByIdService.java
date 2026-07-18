@@ -1,5 +1,6 @@
 package com.marcusvynicius.ecommerce_api.modules.product.services;
 
+import com.marcusvynicius.ecommerce_api.exceptions.ResourceNotFoundException;
 import com.marcusvynicius.ecommerce_api.modules.product.DTOs.ProductResponseDTO;
 import com.marcusvynicius.ecommerce_api.modules.product.repositories.ProductRepository;
 import com.marcusvynicius.ecommerce_api.modules.product.utils.ProductMapper;
@@ -19,7 +20,7 @@ public class FindProductByIdService {
 
     public ProductResponseDTO execute(UUID id) {
         var product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         return productMapper.mapToResponseDTO(product);
     }

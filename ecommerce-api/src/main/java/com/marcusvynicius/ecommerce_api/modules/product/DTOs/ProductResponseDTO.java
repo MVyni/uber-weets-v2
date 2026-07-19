@@ -8,12 +8,16 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductResponseDTO {
+
+    @Schema(description = "The unique identifier of the product", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    private UUID id;
 
     @Schema(description = "The name of the product", example = "California Flower")
     private String name;

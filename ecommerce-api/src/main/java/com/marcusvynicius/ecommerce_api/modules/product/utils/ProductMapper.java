@@ -19,6 +19,7 @@ public class ProductMapper {
 
     public ProductResponseDTO mapToResponseDTO(ProductEntity productEntity) {
         return ProductResponseDTO.builder()
+                .id(productEntity.getId())
                 .name(productEntity.getName())
                 .description(productEntity.getDescription())
                 .price(productEntity.getPrice())

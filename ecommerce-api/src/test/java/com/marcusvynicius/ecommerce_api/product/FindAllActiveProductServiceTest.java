@@ -56,6 +56,7 @@ public class FindAllActiveProductServiceTest {
         );
 
         ProductResponseDTO productDTO = ProductResponseDTO.builder()
+                .id(productEntity.getId())
                 .name("Product Active")
                 .description("Description")
                 .price(BigDecimal.valueOf(10.00))
@@ -72,6 +73,7 @@ public class FindAllActiveProductServiceTest {
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
+        assertEquals(productEntity.getId(), result.getContent().get(0).getId());
         assertEquals("Product Active", result.getContent().get(0).getName());
         assertEquals(true, result.getContent().get(0).getActive());
     }

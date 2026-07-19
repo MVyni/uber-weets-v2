@@ -48,6 +48,7 @@ public class FindProductByIdServiceTest {
                 .build();
 
         ProductResponseDTO productDTO = ProductResponseDTO.builder()
+                .id(productId)
                 .name("Product Active")
                 .description("Description")
                 .price(BigDecimal.valueOf(10.00))
@@ -62,8 +63,8 @@ public class FindProductByIdServiceTest {
 
         var result = findProductByIdService.execute(productId);
 
-        assertThat(result).hasFieldOrProperty("id").isEqualTo(productId);
         assertNotNull(result);
+        assertThat(result.getId()).isEqualTo(productId);
     }
 
     @Test
